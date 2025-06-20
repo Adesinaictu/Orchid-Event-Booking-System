@@ -1,0 +1,610 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #020202;
+    padding-top: 56px; 
+}
+
+.navbar {
+    background: #020202;
+    box-shadow: 0 2px 4px rgba(0,0,0,.1);
+}
+
+.navbar-brand {
+    color: #E2E2E2; /* Changed brand text color */
+}
+
+/* --- HERO SECTION STYLES (NEW/MODIFIED) --- */
+.hero-section {
+    background-image: url('../img/orchid\ concert.jpg'); /* Your generated image URL */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
+    /* This height is crucial to make the background image visible */
+    min-height: 500px; /* Adjust as needed to control the height of your hero section */
+    display: flex; /* Use flexbox to center content */
+    align-items: center; /* Vertically center content */
+    justify-content: center; /* Horizontally center content */
+    padding: 100px 0; /* Add top/bottom padding for content spacing */
+    margin-top: -56px; /* Counteract body's padding-top for fixed navbar */
+}
+
+.hero-content {
+    text-align: center;
+    color: white; /* Ensure text is visible on the background */
+    z-index: 2; /* Ensure content is above any potential overlays */
+    position: relative; /* For proper z-indexing with background/overlay */
+    width: 100%; /* Take full width of hero-section padding */
+}
+
+.hero-text {
+    font-size: 3.5em; /* Larger, more impactful text */
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.7); /* Adds shadow for better readability */
+    margin-bottom: 30px; /* Space below the main text */
+    /* Animation */
+    animation: fadeInScale 1.5s ease-out forwards; /* Changed animation for more effect */
+}
+
+@keyframes fadeInScale {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+/* Style for the search and filter section */
+.search-filter-section {
+    background-color: rgba(255, 255, 255, 0.85); /* Slightly less transparent white background */
+    padding: 30px; /* More padding */
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2); /* Add subtle shadow */
+    max-width: 800px; /* Limit width for better appearance on large screens */
+    margin: 0 auto; /* Center the search/filter box */
+}
+
+
+
+.main {
+    background-image: url('');
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    
+  }
+.navbar .nav-link {
+    color: #E2E2E2;
+}
+.card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.2s ease-in-out;
+}
+
+
+.img-fluid {
+    background-position: 50% 50%; background-size: cover; background-repeat: no-repeat; 
+    background-image: url(); 
+    position: fixed; top: 0px;
+     left: 0px; width: 1024px; height: 354px; overflow: hidden; pointer-events: none; 
+     transform-style: preserve-3d; backface-visibility: hidden; will-change: transform, opacity; 
+     margin-top: -27px; transform: translate3d(0px, 51px, 0px);
+}
+/* ... (previous CSS rules) ... */
+
+/* Style for the active tab button in the login/register section */
+#loginRegisterTab .nav-link.active {
+    background-color: #Da70d6; /* Your desired background color */
+    color: #ffffff; /* Keep text color white for contrast, or adjust as needed */
+    border-color: #Da70d6; /* Match the border color to the background */
+}
+
+/* Optional: Style for the inactive tab buttons if you want them to match the new active style more closely */
+#loginRegisterTab .nav-link {
+    color: #6c757d; /* Default Bootstrap nav-link color */
+    background-color: #f8f9fa; /* Light background for inactive tabs */
+    border: 1px solid #dee2e6;
+    margin: 0 5px; /* Adjust spacing as needed */
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+
+#loginRegisterTab .nav-link:hover {
+    background-color: #Da70d6; /* Slightly darker shade for hover effect */
+    color: #ffffff;
+    border-color: #Da70d6;
+}
+
+/* ... (rest of your CSS rules) ... */
+.btn{
+    background-color: #Da70d6;
+    color: #E2E2E2;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0,0,0,.15) !important;
+}
+
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #343a40;
+}
+
+.card-text {
+    font-size: 0.9rem;
+}
+
+.badge {
+    vertical-align: super;
+    font-size: 0.7em;
+}
+
+
+.event-details-section img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.booking-summary-card {
+    background-color: #020202;
+    border-radius: 8px;
+}
+
+.checkout-steps .nav-link {
+    color: #6c757d;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    margin: 0 5px;
+    border-radius: 5px;
+    padding: 10px 20px;
+}
+.checkout-steps .nav-link.active {
+    color: #fff;
+    background-color: #Da70d6; 
+    border-color: #Da70d6;
+}
+
+.booking-history-card .card-header {
+    background-color: #Da70d6;
+    color: white;
+}
+
+.admin-sidebar {
+    background-color: #343a40;
+    color: white;
+    min-height: calc(100vh - 56px); 
+    padding-top: 20px;
+}
+
+.admin-sidebar .nav-link {
+    color: white;
+    padding: 10px 15px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+}
+
+.admin-sidebar .nav-link:hover,
+.admin-sidebar .nav-link.active {
+    background-color: #674AED;
+}
+
+.admin-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,.05);
+}
+
+/* --- FOOTER (Common across pages) --- */
+footer { 
+    background: #020202 !important; 
+    color: #E2E2E2; 
+    padding-top: 2rem; 
+    padding-bottom: 2rem;
+}
+
+footer a {
+    color: #E2E2E2; 
+    text-decoration: none; 
+    transition: color 0.3s ease; 
+}
+
+footer a:hover {
+    color: #ffffff; 
+}
+.list-group-item-action.active {
+    background-color: #DA70D6 !important; 
+    border-color: #DA70D6 !important; 
+    color: #ffffff !important; 
+}
+
+.list-group-item-action:hover {
+    color: #DA70D6; 
+}
+.booking-history-card .card-header {
+    background-color: #DA70D6 !important;
+    color: white;
+}
+
+
+.bg-primary {
+    background-color: #DA70D6 !important;
+}
+
+.text-primary {
+    color: #DA70D6 !important;
+}
+
+.btn-primary {
+    background-color: #DA70D6 !important;
+    border-color: #DA70D6 !important;
+}
+.btn-primary:hover {
+    background-color: #C060C0 !important; 
+    border-color: #C060C0 !important;
+}
+
+
+
+
+
+/* Pagination styling */
+.pagination .page-item.active .page-link {
+    background-color: #DA70D6; 
+    border-color: #DA70D6;   
+    color: #fff;            
+}
+
+.pagination .page-link {
+    color: #DA70D6; 
+}
+
+.pagination .page-link:hover {
+    color: #c060ba; 
+    background-color: #f0d0ed; 
+    border-color: #c060ba;
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #6c757d; 
+    background-color: #e9ecef; 
+    border-color: #dee2e6;
+}
+#eventImage {
+    width: 100%; /* Make the image responsive */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 10px; /* Rounded corners */
+    margin-bottom: 20px; /* Space below the image */
+}
+/* --- In css/style.css --- */
+
+/* ... (your existing CSS rules) ... */
+
+/* Override Bootstrap Primary Color */
+:root {
+    --bs-primary: #DA70D6; /* Your new primary color: Orchid */
+    --bs-primary-rgb: 218,112,214; /* RGB equivalent for proper Bootstrap calculations */
+}
+
+/* Ensure icons, buttons, and other elements using .text-primary or .btn-primary adopt the new color */
+.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+.btn-primary {
+    background-color: var(--bs-primary);
+    border-color: var(--bs-primary);
+}
+
+.btn-primary:hover {
+    background-color: #C361BE; 
+    border-color: #C361BE;
+}
+
+
+.ticket-types-container strong.text-primary {
+    color: var(--bs-primary) !important;
+}
+
+
+
+
+
+
+
+
+/* contact page  */
+
+
+/* --- Contact Page Specific Styles --- */
+
+.contact-hero {
+    background: linear-gradient(135deg, #DA70D6, #674AED); /* Gradient from purple to magenta */
+    color: white;
+    padding: 80px 30px;
+    margin-top: 56px; /* Offset for fixed navbar */
+    position: relative; /* For icon positioning */
+    overflow: hidden; /* Hide overflow of icon if needed */
+}
+
+.contact-hero .fa-comments {
+    position: absolute;
+    bottom: -20px; /* Adjust to peek out */
+    right: 20px;
+    opacity: 0.2; /* Make it subtle */
+    transform: rotate(-15deg);
+    font-size: 6em !important; /* Larger icon */
+}
+
+.contact-content .card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08); /* More pronounced shadow */
+    transition: transform 0.3s ease;
+}
+
+.contact-content .card:hover {
+    transform: translateY(-5px); /* Lift card on hover */
+}
+
+.contact-btn-submit {
+    background-color: #DA70D6; /* Your requested button color */
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.contact-btn-submit:hover {
+    background-color: #C356C1; /* Slightly darker shade on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.contact-info-list li {
+    display: flex;
+    align-items: flex-start; /* Align icon and text at the top */
+    margin-bottom: 20px;
+}
+
+.contact-info-list .contact-icon {
+    font-size: 1.8em;
+    color: #DA70D6; /* Icon color matching button */
+    flex-shrink: 0; /* Prevent icon from shrinking */
+    margin-top: 5px; /* Align icon better with text */
+}
+
+.contact-info-list p {
+    margin-bottom: 0.2rem; /* Reduce space between bold text and muted text */
+}
+
+.contact-info-list a {
+    color: #DA70D6; /* Link color matching theme */
+    text-decoration: none;
+}
+
+.contact-info-list a:hover {
+    text-decoration: underline;
+}
+
+.social-icons a {
+    color: #6c757d; /* Default social icon color */
+    transition: color 0.3s ease;
+}
+
+.social-icons a:hover {
+    color: #DA70D6; /* Hover color for social icons */
+}
+
+#contact-map-placeholder {
+    height: 400px;
+    background-color: #e9ecef; /* Light grey background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-style: italic;
+    color: #6c757d;
+    font-size: 1.2em;
+
+}
+
+
+
+
+
+/* about.html */
+
+/* --- About Us Page Specific Styles --- */
+
+.about-hero {
+    background: linear-gradient(135deg, #674AED, #DA70D6); /* Gradient matching contact page */
+    color: white;
+    padding: 80px 30px;
+    margin-top: 56px; /* Offset for fixed navbar */
+    position: relative;
+    overflow: hidden;
+}
+
+.about-hero .fa-ticket-alt {
+    position: absolute;
+    bottom: -20px;
+    left: 20px; /* Different position than contact page */
+    opacity: 0.2;
+    transform: rotate(15deg); /* Different rotation */
+    font-size: 6em !important;
+}
+
+.about-card {
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.12); /* Stronger shadow on hover */
+}
+
+.about-card .card-title {
+    color: #343a40; /* Dark text for titles */
+    font-weight: 600;
+}
+
+.about-card .card-text {
+    color: #6c757d; /* Muted text for descriptions */
+}
+
+.about-icon {
+    color: #DA70D6; /* Icon color matching theme */
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.about-cta {
+    background: linear-gradient(45deg, #DA70D6, #674AED); /* Another gradient for CTA */
+    color: white;
+    padding: 60px 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+.about-btn-cta {
+    background-color: #ffffff; /* White button for contrast */
+    color: #DA70D6; /* Text color matching theme */
+    border: 2px solid #ffffff; /* White border */
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 50px; /* Pill-shaped button */
+    transition: background-color 0.3s ease, color 0.3s ease, transform 0.2s ease, border-color 0.3s ease;
+}
+
+.about-btn-cta:hover {
+    background-color: #DA70D6; /* Fill with theme color on hover */
+    color: white;
+    border-color: #DA70D6;
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+/* catergoies page  */
+
+
+/* --- Categories Page Specific Styles --- */
+
+.category-hero {
+    background: linear-gradient(135deg, #674AED, #DA70D6); /* Gradient from purple to magenta */
+    color: white;
+    padding: 80px 30px;
+    margin-top: 56px; /* Offset for fixed navbar */
+    position: relative;
+    overflow: hidden;
+}
+
+.category-hero .fa-grip-horizontal { /* Icon for categories page hero */
+    position: absolute;
+    bottom: -20px;
+    left: 20px; /* Changed position to left */
+    opacity: 0.2;
+    transform: rotate(15deg); /* Adjusted rotation */
+    font-size: 6em !important;
+}
+
+.category-card {
+    border: none;
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-8px); /* More pronounced lift on hover */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1); /* Stronger shadow on hover */
+}
+
+.category-icon-wrapper {
+    background-color: rgba(255, 255, 255, 0.1); /* Light background for icon */
+    border-radius: 50%; /* Circular background */
+    width: 90px; /* Size of the circle */
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 15px auto; /* Center it and add space below */
+    box-shadow: inset 0 0 15px rgba(255,255,255,0.2); /* Inner shadow for depth */
+}
+
+.category-icon {
+    color: #DA70D6; /* Icon color matching button */
+    transition: color 0.3s ease;
+}
+
+.category-card:hover .category-icon {
+    color: #674AED; /* Change icon color on card hover */
+}
+
+.category-btn {
+    background-color: #DA70D6; /* Your requested button color */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 0.95rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.category-btn:hover {
+    background-color: #C356C1; /* Slightly darker shade on hover */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.custom-outline-btn {
+    border: 2px solid #DA70D6;
+    color: #DA70D6;
+    background-color: transparent;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.custom-outline-btn:hover {
+    background-color: #DA70D6;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* --- Responsive Styles --- */     
+@media (max-width: 768px) {
+    .hero-text {
+        font-size: 2.5em; /* Smaller text on mobile */
+    }
+    
+    .search-filter-section {
+        padding: 20px; /* Less padding on mobile */
+    }
+    
+    .contact-hero, .about-hero, .category-hero {
+        padding: 60px 20px; /* Adjusted padding for smaller screens */
+    }
+    
+    .contact-btn-submit, .about-btn-cta, .category-btn, .custom-outline-btn {
+        width: 100%; /* Full width buttons on mobile */
+        padding: 12px; /* Adjusted padding */
+    }
+}

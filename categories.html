@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Event Categories - Orchidfy</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo (2).png" alt="Eventify Logo" srcset="">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="categories.html">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="contact.html">Contact</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i> Cart     <span class="badge bg-danger rounded-pill" id="cart-count-badge">0</span>
+
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i> Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="login.html">Login / Register</a></li>
+                            <li><a class="dropdown-item" href="booking-history.html">My Bookings</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5 pt-4">
+        <section class="category-hero text-center py-5 mb-5 rounded-3 shadow-sm">
+            <h1 class="display-4 fw-bold mb-3">Explore Event Categories</h1>
+            <p class="lead mb-4">
+                Discover a world of experiences! From electrifying concerts to insightful conferences, <br class="d-none d-md-block">
+                find events that match your passion.
+            </p>
+            <i class="fas fa-grip-horizontal fa-3x text-white-50"></i>
+        </section>
+
+        <section class="categories-grid row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4 mb-5">
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-music fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Music</h3>
+                        <p class="card-text text-muted">Concerts, festivals, live bands, DJ nights.</p>
+                        <a href="index.html?category=music" class="btn category-btn">View Music Events</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-laptop-code fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Tech & Innovation</h3>
+                        <p class="card-text text-muted">Conferences, workshops, hackathons, expos.</p>
+                        <a href="index.html?category=tech" class="btn category-btn">View Tech Events</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-running fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Sports & Fitness</h3>
+                        <p class="card-text text-muted">Marathons, tournaments, fitness classes, outdoor adventures.</p>
+                        <a href="index.html?category=sports" class="btn category-btn">View Sports Events</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-palette fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Arts & Culture</h3>
+                        <p class="card-text text-muted">Exhibitions, theater, dance, literary events.</p>
+                        <a href="index.html?category=art" class="btn category-btn">View Arts Events</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-utensils fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Food & Drink</h3>
+                        <p class="card-text text-muted">Food festivals, cooking classes, wine tastings.</p>
+                        <a href="index.html?category=food" class="btn category-btn">View Food Events</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col">
+                <div class="category-card card h-100 shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <div class="category-icon-wrapper mb-3">
+                            <i class="fas fa-graduation-cap fa-3x category-icon"></i>
+                        </div>
+                        <h3 class="card-title mb-2">Workshops & Education</h3>
+                        <p class="card-text text-muted">Seminars, training, skill-building courses.</p>
+                        <a href="index.html?category=education" class="btn category-btn">View Workshops</a>
+                    </div>
+                </div>
+            </div>
+
+            </section>
+
+        <section class="call-to-action text-center py-5">
+            <h2 class="mb-3">Can't find what you're looking for?</h2>
+            <p class="lead mb-4">
+                We're constantly adding new events! Use our powerful search on the homepage, <br class="d-none d-md-block">
+                or suggest a category you'd like to see.
+            </p>
+            <a href="index.html" class="btn custom-outline-btn btn-lg me-3">Browse All Events</a>
+            <a href="contact.html" class="btn category-btn btn-lg">Suggest a Category</a>
+        </section>
+
+    </main>
+
+    <footer class="text-center py-4 mt-5 bg-dark">
+        <div class="container">
+            <p>&copy; 2024 Orchidfy. All rights reserved.</p>
+            <p>
+                <a href="#" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+            </p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="js/script.js"></script><script src="js/updateCartCount.js"></script>
+<!-- <script src="js/checkout.js"></script> -->
+</body>
+</html>

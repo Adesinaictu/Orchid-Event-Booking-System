@@ -1,0 +1,124 @@
+<!-- Detailed event view -->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orchidfy - Online Event Booking</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/logo (2).png" alt="" srcset="">
+            </a> <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="index.html">Events</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#">Contact</a>
+                    </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="cart.html">
+                            <i class="fas fa-shopping-cart"></i> Cart     <span class="badge bg-danger rounded-pill" id="cart-count-badge">0</span>
+
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-user-circle"></i> Account
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <li><a class="dropdown-item" href="login.html">Login / Register</a></li>
+                            <li><a class="dropdown-item" href="booking-history.html">My Bookings</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <main class="container mt-5 pt-4">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="index.html">Events</a></li>
+                <li class="breadcrumb-item active" aria-current="page" id="event-name-breadcrumb">Event Details</li>
+            </ol>
+        </nav>
+
+        <div class="row event-details-section">
+            <div class="col-lg-8">
+                <img id="event-image" src="https://via.placeholder.com/800x450" class="card-img-top" alt="Event Image" >
+                <div class="card-body">
+                    <h1 class="card-title" id="event-title">Loading Event...</h1>
+                    <p class="text-muted" id="event-category"></p>
+                    <hr>
+                    <h4 class="mb-3">Event Details</h4>
+                    <p id="event-description" class="card-text"></p>
+                    <ul class="list-unstyled event-meta">
+                        <li><i class="fas fa-calendar-alt"></i> Date: <span id="event-date"></span></li>
+                        <li><i class="fas fa-clock"></i> Time: <span id="event-time"></span></li>
+                        <li><i class="fas fa-map-marker-alt"></i> Location: <span id="event-location"></span></li>
+                    </ul>
+                    <hr>
+                    <h4 class="mb-3">Tickets & Pricing</h4>
+                    <p class="card-text"><strong>Price: NGN <span id="event-price"></span></strong></p>
+                    <div class="mb-3">
+                        <label for="quantity" class="form-label">Quantity:</label>
+                        <input type="number" id="quantity" class="form-control" value="1" min="1" style="width: 100px;">
+                    </div>
+
+                </div>
+
+                <div class="d-grid gap-2 mt-4">
+                    <button id="addToCartBtn" type="submit" class="btn ">Add to Cart</button>
+                    <a href="index.html" class="btn btn-secondary mt-3">Back to Events</a>
+
+                </div>
+
+            </div>
+
+            </form>
+        </div>
+        </div>
+        </div>
+    </main>
+
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <div class="container">
+            <p>&copy; 2024 Orchidfy. All rights reserved.</p>
+            <p>
+                <a href="#" class="text-white mx-2"><i class="fab fa-facebook-f"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-instagram"></i></a>
+            </p>
+        </div>
+    </footer>
+</footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="js/updateCartCount.js"></script> <script src="js/event-detail.js"></script>   </body>
+</html>
