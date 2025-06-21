@@ -147,7 +147,7 @@
                     const password = document.getElementById('loginPassword').value;
 
                     try {
-                        const response = await fetch('backend/login_process.php', {
+                        const response = await fetch('api/login_process.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -193,7 +193,7 @@
                     }
 
                     try {
-                        const response = await fetch('backend/register_process.php', {
+                        const response = await fetch('api/register_process.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'

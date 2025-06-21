@@ -1,4 +1,3 @@
-// js/updateCartCount.js
 
 // Make the function globally accessible
 window.updateCartCount = async function() {

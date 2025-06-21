@@ -5,7 +5,7 @@ header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET');
 
-require_once __DIR__ . '/backend/db_connect.php';
+require_once __DIR__ . '../includes/db_connect.php';
 
 $conn = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 

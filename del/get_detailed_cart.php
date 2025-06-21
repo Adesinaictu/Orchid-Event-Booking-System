@@ -1,4 +1,7 @@
-<?php
+
+
+
+   <?php
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);session_start();
@@ -14,10 +17,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit;
 }
 
-$response = ['success' => false, 'cart_items' => [], 'total_amount' => 0, 'message' => ''];
+$response = ['success' => false, 'cart_item' => [], 'total_amount' => 0, 'message' => ''];
 
 $dbHost = 'localhost';
-$dbName = 'orchidfy_db';
+$dbName = '';
 $dbUser = 'root';
 $dbPass = '';
 
@@ -35,7 +38,6 @@ try {
     }
 
     $eventIds = array_keys($cart);
-    // Convert array to a comma-separated string for the IN clause
     $inClause = implode(',', array_fill(0, count($eventIds), '?'));
 
     $stmt = $pdo->prepare("SELECT event_id, name, price, date FROM events WHERE event_id IN ($inClause)");
@@ -54,7 +56,7 @@ try {
             'event_id' => $eventId,
             'name' => $event['name'],
             'price' => (float)$event['price'],
-            'date' => $event['date'], // Assuming events table has a 'date' column
+            'date' => $event['date'],  
             'quantity' => $quantity,
             'item_total' => $itemTotalPrice
         ];
@@ -62,7 +64,7 @@ try {
     }
 
     $response['success'] = true;
-    $response['cart_items'] = $detailedCart;
+    $response['cart_item'] = $detailedCart;
     $response['total_amount'] = $totalAmount;
 
 } catch (PDOException $e) {

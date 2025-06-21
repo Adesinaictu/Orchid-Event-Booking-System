@@ -12,8 +12,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- API Endpoint Configuration ---
     // This API endpoint is responsible for fetching events, potentially with filters.
     // Make sure your backend (api.php) can handle 'search', 'location', 'date', 'category' GET parameters.
-    const EVENTS_API_URL = 'http://localhost/orchid/backend/api.php';
-    const ADD_TO_CART_API_URL = 'http://localhost/orchid/backend/add_to_cart.php';
+    const EVENTS_API_URL = 'http://localhost/orchid/api/api.php';
+    const ADD_TO_CART_API_URL = 'http://localhost/orchid/api/add_to_cart.php';
 
 
     // --- Utility Function: Show Loading State ---

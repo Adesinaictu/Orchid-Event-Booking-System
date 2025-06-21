@@ -608,3 +608,50 @@ footer a:hover {
         padding: 12px; /* Adjusted padding */
     }
 }
+
+
+.cart-item-img {
+  width: 100%;         /* Ensures image doesn't overflow its column */
+  max-width: 100px;    /* Controls actual width */
+  height: auto;        /* Keeps aspect ratio */
+  object-fit: cover;   /* Keeps image neat inside the box */
+  border-radius: 8px;  /* Optional: rounded corners */
+  display: block;
+}
+
+/* --- Aggressive Cart Image Styling --- */
+/* This section aims to forcefully control cart image size */
+
+.cart-item-card .col-md-3 {
+    /* Ensure this container has a defined space for the image */
+    width: 150px !important; /* Force a fixed width for the image column */
+    height: 150px !important; /* Force a fixed height for the image column */
+    min-width: 150px !important; /* Prevent it from shrinking smaller */
+    max-width: 150px !important; /* Prevent it from growing larger */
+    overflow: hidden !important; /* Crucial: Hides anything that overflows this box */
+    display: flex !important; /* Use flexbox */
+    align-items: center !important; /* Vertically center image */
+    justify-content: center !important; /* Horizontally center image */
+    padding: 5px !important; /* Reduce padding to ensure image fits within the fixed size */
+    box-sizing: border-box !important; /* Include padding in the width/height calculation */
+}
+
+.cart-item-img {
+    /* Force the image to fit its parent's fixed size */
+    width:1 80px;   /* Adjust as needed */
+  height: 80px;  /* Adjust as needed */
+  object-fit: cover;
+    display: block !important; /* Ensure it behaves as a block element */
+    border-radius: 0.25rem !important; /* Keep rounded corners */
+}
+
+/* You might want to adjust the card body for better spacing with the smaller image */
+.cart-item-card .card-body {
+    padding-left: 1rem !important; /* Restore some left padding for text beside image */
+    flex-grow: 1 !important; /* Allow the body to take up remaining space */
+}
+
+/* Optional: Ensure the overall row aligns items nicely */
+.cart-item-card .row.g-0 {
+    align-items: center !important; /* Ensures vertical alignment within the card row */
+}

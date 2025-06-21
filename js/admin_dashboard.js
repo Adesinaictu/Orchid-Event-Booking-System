@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const API_BASE_URL = 'http://localhost/orchid/backend/admin_dashboard_api.php'; 
+    const API_BASE_URL = 'http://localhost/orchid/api/admin_dashboard_api.php'; 
 
     async function fetchDashboardData() {
         try {

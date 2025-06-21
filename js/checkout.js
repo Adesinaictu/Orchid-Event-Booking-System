@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     // --- DOM Elements ---
-    const attendeeDetailsTab = document.getElementById('details-tab');
-    const paymentInfoTab = document.getElementById('payment-tab');
-    const orderReviewTab = document.getElementById('review-tab');
+    const attendeeDetailsTabLink = document.getElementById('details-tab');
+    const paymentInfoTabLink = document.getElementById('payment-tab');
+    const orderReviewTabLink = document.getElementById('review-tab');
 
     const nextToPaymentBtn = document.getElementById('next-to-payment');
-    const prevToDetailsBtn = document.getElementById('prev-to-details');
+    // Renamed for clarity:
+    const prevFromPaymentToDetailsBtn = document.getElementById('prev-to-details'); // Button on Payment tab to go to Details
     const nextToReviewBtn = document.getElementById('next-to-review');
-    const prevToPaymentBtn = document.getElementById('prev-to-payment');
+    const prevFromReviewToPaymentBtn = document.getElementById('prev-to-payment'); // Button on Review tab to go to Payment
     const confirmBookingBtn = document.getElementById('confirm-booking-btn');
 
     const attendeeDetailsForm = document.getElementById('attendee-details-form');
@@ -20,8 +21,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const reviewTicketsList = document.getElementById('review-tickets-list');
     const reviewTotalPrice = document.getElementById('review-total-price');
 
-    // Modals related elements (bookingIdDisplay is kept here as it's a direct DOM element)
+    // Modals related elements
     const bookingIdDisplay = document.getElementById('booking-id-display');
+    const bookingSuccessModalElement = document.getElementById('bookingSuccessModal'); // Get the modal element itself
 
     // --- Global Data Stores ---
     let cartItems = []; // Stores items from the cart
@@ -30,8 +32,8 @@ document.addEventListener('DOMContentLoaded', function() {
     let paymentInfo = {}; // Stores payment details
 
     // --- API Endpoints ---
-    const GET_CART_API_URL = 'http://localhost/orchid/backend/get_cart.php'; // API to fetch cart items
-    const PLACE_ORDER_API_URL = 'http://localhost/orchid/backend/place_order.php'; // API to place the order
+    const GET_CART_API_URL = 'http://localhost/orchid/api/get_cart.php'; // API to fetch cart items
+    const PLACE_ORDER_API_URL = 'http://localhost/orchid/api/place_order.php'; // API to place the order
 
 
     // --- Helper to navigate tabs ---
@@ -51,28 +53,47 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                cartItems = data.cart;
+                cartItems = data.data.cart;   
+
+                if (!Array.isArray(cartItems)) {
+                console.error('Expected cartItems to be an array, but received:', cartItems);
+                throw new Error('Invalid data format received for cart items.');
+            }
+                
                 if (cartItems.length === 0) {
                     alert('Your cart is empty. Please add items to your cart before checking out.');
-                    window.location.href = 'index.html'; // Redirect to events page
+                   //  window.location.href = 'index.html'; 
                 } else {
                     renderTicketHolderForms();
-                    updateCartCount(); // Update the navbar cart count
+                    // updateCartCount(); 
                 }
             } else {
                 alert('Failed to load cart items: ' + (data.message || 'Unknown error.'));
-                window.location.href = 'cart.html'; // Redirect back to cart
+              // window.location.href = 'cart.html';  
             }
         } catch (error) {
             console.error('Error fetching cart items:', error);
             alert('An error occurred while loading your cart. Please try again or go back to cart.');
-            window.location.href = 'cart.html'; // Redirect back to cart
+             // window.location.href = 'cart.html'; 
         }
     }
 
-    // --- Function to render dynamic ticket holder forms ---
     function renderTicketHolderForms() {
         ticketHolderFormsContainer.innerHTML = ''; // Clear previous forms
+
+        let totalTickets = 0;
+        cartItems.forEach(item => {
+            totalTickets += item.quantity;
+        });
+
+        if (totalTickets > 1) { // Only show individual forms if more than 1 ticket
+             // Add a general instruction if multiple tickets are present
+            const instructionDiv = document.createElement('div');
+            instructionDiv.className = 'alert alert-info small mt-3';
+            instructionDiv.textContent = 'Please provide details for each ticket holder below. Leave blank if the main attendee is the only ticket holder or tickets are for the same person.';
+            ticketHolderFormsContainer.appendChild(instructionDiv);
+        }
+
 
         cartItems.forEach((item, itemIndex) => {
             for (let i = 0; i < item.quantity; i++) {
@@ -84,17 +105,17 @@ document.addEventListener('DOMContentLoaded', function() {
                         <div class="col-md-6 mb-2">
                             <label for="ticketHolderFirstName-${itemIndex}-${i}" class="form-label small">First Name</label>
                             <input type="text" class="form-control form-control-sm ticket-holder-first-name"
-                                id="ticketHolderFirstName-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}" required>
+                                id="ticketHolderFirstName-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}">
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="ticketHolderLastName-${itemIndex}-${i}" class="form-label small">Last Name</label>
                             <input type="text" class="form-control form-control-sm ticket-holder-last-name"
-                                id="ticketHolderLastName-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}" required>
+                                id="ticketHolderLastName-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}">
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="ticketHolderEmail-${itemIndex}-${i}" class="form-label small">Email</label>
                             <input type="email" class="form-control form-control-sm ticket-holder-email"
-                                id="ticketHolderEmail-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}" required>
+                                id="ticketHolderEmail-${itemIndex}-${i}" data-item-index="${itemIndex}" data-ticket-index="${i}">
                         </div>
                         <div class="col-md-6 mb-2">
                             <label for="ticketHolderPhone-${itemIndex}-${i}" class="form-label small">Phone (Optional)</label>
@@ -110,6 +131,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Validate Attendee Details and collect data ---
     function validateAndCollectAttendeeDetails() {
+        // First, check the main attendee form
         if (!attendeeDetailsForm.checkValidity()) {
             attendeeDetailsForm.classList.add('was-validated');
             return false;
@@ -125,40 +147,53 @@ document.addEventListener('DOMContentLoaded', function() {
 
         ticketHoldersDetails = [];
         const ticketHolderFirstNameInputs = document.querySelectorAll('.ticket-holder-first-name');
+        const totalTicketsInCart = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-        if (ticketHolderFirstNameInputs.length > 0) {
+        if (ticketHolderFirstNameInputs.length > 0 && totalTicketsInCart > 1) {
             let allTicketHoldersValid = true;
             ticketHolderFirstNameInputs.forEach(input => {
                 const itemIndex = parseInt(input.dataset.itemIndex);
                 const ticketIndex = parseInt(input.dataset.ticketIndex);
 
-                const fName = document.getElementById(`ticketHolderFirstName-${itemIndex}-${ticketIndex}`).value;
-                const lName = document.getElementById(`ticketHolderLastName-${itemIndex}-${ticketIndex}`).value;
-                const email = document.getElementById(`ticketHolderEmail-${itemIndex}-${ticketIndex}`).value;
-                const phone = document.getElementById(`ticketHolderPhone-${itemIndex}-${ticketIndex}`).value;
+                const fNameInput = document.getElementById(`ticketHolderFirstName-${itemIndex}-${ticketIndex}`);
+                const lNameInput = document.getElementById(`ticketHolderLastName-${itemIndex}-${ticketIndex}`);
+                const emailInput = document.getElementById(`ticketHolderEmail-${itemIndex}-${ticketIndex}`);
+                const phoneInput = document.getElementById(`ticketHolderPhone-${itemIndex}-${ticketIndex}`);
 
-                if (!fName || !lName || !email) {
-                    allTicketHoldersValid = false;
-                    input.reportValidity(); // Show validation message for the invalid input
+                const fName = fNameInput.value.trim();
+                const lName = lNameInput.value.trim();
+                const email = emailInput.value.trim();
+                const phone = phoneInput.value.trim();
+
+                // If any field is partially filled, all required fields for that ticket must be filled
+                if (fName || lName || email || phone) {
+                    if (!fName || !lName || !email) {
+                        allTicketHoldersValid = false;
+                        // Trigger HTML5 validation messages for specific inputs
+                        if (!fName) fNameInput.reportValidity();
+                        if (!lName) lNameInput.reportValidity();
+                        if (!email) emailInput.reportValidity();
+                        return; // Skip to next iteration
+                    }
                 }
 
                 ticketHoldersDetails.push({
                     event_id: cartItems[itemIndex].id, // Associate ticket holder with specific event
                     event_name: cartItems[itemIndex].name,
-                    first_name: fName,
-                    last_name: lName,
-                    email: email,
-                    phone: phone,
+                    first_name: fName || attendeeDetails.firstName, // Use main attendee if not provided
+                    last_name: lName || attendeeDetails.lastName,
+                    email: email || attendeeDetails.email,
+                    phone: phone || attendeeDetails.phone,
                     ticket_price: cartItems[itemIndex].price // Store price for individual tickets too
                 });
             });
 
             if (!allTicketHoldersValid) {
-                alert('Please fill in all required fields for all ticket holders.');
+                alert('Please ensure all required fields for individual ticket holders are filled, or leave them completely blank to use main attendee details.');
                 return false;
             }
         } else {
-            // If no specific ticket holders forms, assume main attendee is the ticket holder for all
+            // If no specific ticket holders forms (only one ticket) or they are left blank, assume main attendee is the ticket holder for all
             cartItems.forEach(item => {
                 for (let i = 0; i < item.quantity; i++) {
                     ticketHoldersDetails.push({
@@ -224,14 +259,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (nextToPaymentBtn) {
         nextToPaymentBtn.addEventListener('click', function() {
             if (validateAndCollectAttendeeDetails()) {
-                navigateToTab(paymentInfoTab);
+                navigateToTab(paymentInfoTabLink); // Use the correct tab link variable
             }
         });
     }
 
-    if (prevToDetailsBtn) {
-        prevToDetailsBtn.addEventListener('click', function() {
-            navigateToTab(attendeeDetailsTab);
+    if (prevFromPaymentToDetailsBtn) { // Corrected variable name
+        prevFromPaymentToDetailsBtn.addEventListener('click', function() {
+            navigateToTab(attendeeDetailsTabLink); // Use the correct tab link variable
         });
     }
 
@@ -239,14 +274,14 @@ document.addEventListener('DOMContentLoaded', function() {
         nextToReviewBtn.addEventListener('click', function() {
             if (validateAndCollectPaymentInfo()) {
                 populateReviewTab();
-                navigateToTab(orderReviewTab);
+                navigateToTab(orderReviewTabLink); // Use the correct tab link variable
             }
         });
     }
 
-    if (prevToPaymentBtn) {
-        prevToPaymentBtn.addEventListener('click', function() {
-            navigateToTab(paymentInfoTab);
+    if (prevFromReviewToPaymentBtn) { // Corrected variable name
+        prevFromReviewToPaymentBtn.addEventListener('click', function() {
+            navigateToTab(paymentInfoTabLink); // Use the correct tab link variable
         });
     }
 
@@ -281,33 +316,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Update the booking ID in the modal
                     bookingIdDisplay.textContent = result.bookingId || '#N/A';
 
-                    // --- REVISED MODAL INITIALIZATION AND DISPLAY ---
-                    const modalElement = document.getElementById('bookingSuccessModal'); // Ensure this ID matches your HTML modal
-                    if (modalElement) {
-                        const bookingSuccessModalInstance = bootstrap.Modal.getInstance(modalElement) || new bootstrap.Modal(modalElement);
-                        bookingSuccessModalInstance.show();
-                    } else {
-                        console.error('Booking Success Modal element with ID "bookingSuccessModal" not found!');
-                        alert('Booking successful, but confirmation modal could not be displayed.');
-                    }
-                    // --- END REVISED MODAL HANDLING ---
-
+                    const bookingSuccessModalInstance = new bootstrap.Modal(bookingSuccessModalElement); // Create new instance
+                    bookingSuccessModalInstance.show();
 
                     // Clear the cart after successful booking
-                    // This assumes the backend also clears the cart for the user
-                    // or provides an endpoint to do so. For frontend only:
                     if (typeof clearCart === 'function') { // Assuming clearCart is defined in updateCartCount.js
                         clearCart();
                     } else {
                         console.warn('clearCart function not found. Cart might not be cleared on frontend.');
                         localStorage.removeItem('cart'); // Fallback if clearCart not available
-                        updateCartCount(); // Update badge
+                        // No need to call updateCartCount() here if clearCart() already does it or if we are redirecting
                     }
 
-                    // Optionally redirect after a short delay or user closes modal
-                    // setTimeout(() => {
-                    //      window.location.href = `booking-success.html?bookingId=${result.bookingId}`;
-                    // }, 3000); // Redirect after 3 seconds
                 } else {
                     alert('Booking failed: ' + (result.message || 'Unknown error.'));
                     console.error('Backend booking error:', result.message);
@@ -326,8 +346,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Initial Load ---
     fetchCartItems(); // Load cart items when the page loads
-    updateCartCount(); // Ensure navbar cart count is accurate
-
-    
-
+    // Make sure updateCartCount is called, assuming it's in updateCartCount.js and globally available
+    if (typeof updateCartCount === 'function') {
+        updateCartCount();
+    } else {
+        console.warn('updateCartCount function not found. Cart badge might not be updated on load.');
+    }
 });

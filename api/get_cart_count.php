@@ -5,6 +5,9 @@ header('Access-Control-Allow-Origin: *'); // Adjust for production
 header('Access-Control-Allow-Methods: GET');
 header('Access-Control-Allow-Headers: Content-Type');
 
+
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
 $cartCount = 0;
 if (isset($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     // Assuming cart items are stored as {id: ..., quantity: ...}
