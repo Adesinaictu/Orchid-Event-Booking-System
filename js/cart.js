@@ -1,7 +1,30 @@
-//  for Database Integration
+//  for Database Integration
 
 document.addEventListener('DOMContentLoaded', function() {
     const cartItemsContainer = document.getElementById('cartItems');
+
+    // --- CRITICAL FIX START ---
+    // Only proceed with cart functionality if the main cart container element exists on this page.
+    // This prevents errors on pages like index.html where full cart UI might not be present.
+    if (!cartItemsContainer) {
+        console.log("Cart container (ID 'cartItems') not found on this page. Skipping cart.js initialization.");
+        // Optionally, you might still want to call updateCartCount if it's a global counter in the header
+        if (typeof updateCartCount === 'function') {
+            // Fetch cart to update the count in the header, but don't try to render the full cart UI
+            fetch('http://localhost/orchid/api/get_cart.php')
+                .then(response => response.json())
+                .then(result => {
+                    if (result.success && result.data && Array.isArray(result.data.cart)) {
+                        updateCartCount(result.data.cart.reduce((sum, item) => sum + item.quantity, 0));
+                    }
+                })
+                .catch(error => console.error('Error fetching cart count:', error));
+        }
+        return; // Exit the function if the cart UI elements aren't present
+    }
+    // --- CRITICAL FIX END ---
+
+
     const emptyCartMessage = document.getElementById('emptyCartMessage');
     const cartSummary = document.getElementById('cartSummary');
     const cartSummaryList = document.getElementById('cart-summary-list');
@@ -26,10 +49,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 const errorText = await response.text();
                 throw new Error(`HTTP error! status: ${response.status}. Details: ${errorText}`);
             }
-            const result = await response.json(); 
+            const result = await response.json();
 
             if (result.success) {
-                //  Access the nested 'cart' array as confirmed by  API response
+                // Access the nested 'cart' array as confirmed by API response
                 cart = result.data.cart;
 
                 // Basic validation: ensure cart is an array before proceeding
@@ -41,7 +64,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 renderCart(); // Render the cart items fetched from the API
                 // Assuming updateCartCount is loaded from updateCartCount.js
                 if (typeof updateCartCount === 'function') {
-                    updateCartCount(); // Update the cart count in the navbar (e.g., total items)
+                    updateCartCount(cart.reduce((sum, item) => sum + item.quantity, 0)); // Pass total items to updateCartCount
                 }
             } else {
                 alert('Failed to load cart items from server: ' + (result.message || 'Unknown error.'));
@@ -88,7 +111,9 @@ document.addEventListener('DOMContentLoaded', function() {
             itemCard.className = 'card mb-3 shadow-sm cart-item-card';
             itemCard.innerHTML = `
                 <div class="row g-0 align-items-center">
-                    
+                    <div class="col-md-3">
+                        <img src="${imageUrl}" class="img-fluid rounded-start cart-item-img" alt="${item.name}">
+                    </div>
                     <div class="col-md-9">
                         <div class="card-body">
                             <h5 class="card-title">${item.name}</h5>
@@ -103,9 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
                                 <i class="fas fa-trash-alt me-1"></i> Remove
                             </button>
                         </div>
-                        <div class="col-md-3">
-                        <img src="${imageUrl}" class="img-fluid rounded-start cart-item-img" alt="${item.name}">
-                    </div>
                     </div>
                 </div>
             `;
@@ -237,7 +259,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 cart = []; // Empty local cart array on successful backend clear
                 renderCart(); // Update UI to show empty cart
                 if (typeof updateCartCount === 'function') {
-                    updateCartCount();
+                    updateCartCount(0); // Set count to 0 after clearing
                 }
                 alert('Your cart has been cleared.');
             } else {

@@ -9,13 +9,19 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// Include the database connection file
-require_once '../includes/db_connect.php';
+
+// Always include config.php FIRST to define DB_HOST, DB_USER, etc.
+require_once __DIR__ . '/../config.php';
+
+require_once __DIR__ . '/../includes/db_connect.php';
+
+// ... rest of your API logic ...
+// --- CRITICAL FIX END ---
 
 $events = [];
 
 // Build the SQL query dynamically based on GET parameters
-// CORRECTED: Changed 'image' to 'image_url'
+// CORRECTED: Changed 'image' to 'image_url' (already done by you, good!)
 $sql = "SELECT id, name, description, date, time, location, price, image_url, category FROM events";
 $conditions = [];
 $params = [];

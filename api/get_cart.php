@@ -10,13 +10,6 @@ header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: GET, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
 
-
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
-
-
-
-
 // Handle pre-flight OPTIONS request (CORS)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
@@ -25,7 +18,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 
 session_start();
 
+// --- IMPORTANT FIX HERE ---
+// FIRST: Include config.php to define database constants (DB_HOST, DB_USER, etc.)
+require_once __DIR__ . '/../config.php';
 
+// SECOND: Include db_connect.php, which can now use those defined constants
 require_once __DIR__ . '/../includes/db_connect.php';
 
 // Function to send a JSON response and terminate script
@@ -35,7 +32,9 @@ function sendJsonResponse($success, $message = '', $data = []) {
 }
 
 // --- User ID Handling ---
-$user_id = 1; 
+// In a real application, you would get this from the session after user login.
+// For now, it's hardcoded as per your existing logic.
+$user_id = 1;
 
 try {
     $stmt = $conn->prepare("
@@ -51,11 +50,11 @@ try {
         WHERE
             ci.user_id = ?
         ORDER BY
-            ci.created_at ASC  -- CHANGED FROM added_at TO created_at
+            ci.created_at ASC
     ");
 
     if ($stmt === false) {
-        error_log("mysqli prepare failed: (" . $conn->errno . ") " . $conn->error);
+        error_log("mysqli prepare failed in get_cart.php: (" . $conn->errno . ") " . $conn->error);
         throw new Exception("Failed to prepare database statement for cart retrieval.");
     }
 
@@ -71,9 +70,15 @@ try {
     http_response_code(500);
     sendJsonResponse(false, 'An error occurred retrieving cart: ' . $e->getMessage());
 } finally {
+    // It's generally good practice to close statements, but keep the connection open
+    // if other parts of the script might use it, or if it's managed by db_connect.php
     if (isset($stmt) && $stmt !== false) {
         $stmt->close();
     }
-    // $conn->close();
+    // Do NOT close the $conn here if db_connect.php keeps it global for other scripts.
+    // If db_connect.php auto-closes, that's fine, but explicitly closing here
+    // can cause issues if other parts of the same request need the connection.
+    // Generally, let the script end to close the connection automatically,
+    // or manage it more carefully with a persistent connection pool if performance demands it.
 }
 ?>

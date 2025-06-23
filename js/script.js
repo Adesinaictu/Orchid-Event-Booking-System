@@ -2,7 +2,8 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- DOM Element References ---
-    const eventListDiv = document.getElementById('event-list');
+    // CORRECTED: Changed 'event-list' to 'events-container' to match index.html
+    const eventListDiv = document.getElementById('events-container');
     const searchInput = document.getElementById('searchInput');
     const searchButton = document.getElementById('searchButton');
     const locationFilter = document.getElementById('locationFilter');
@@ -48,7 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Sends a request to the backend API with current filter parameters.
     async function fetchEvents(filters = {}) {
         if (!eventListDiv) {
-            console.warn("event-list div (ID 'event-list') not found. Not fetching or displaying events.");
+            // Updated console warning to reflect the correct ID being sought
+            console.warn("Event listing container (ID 'events-container') not found. Not fetching or displaying events.");
             return;
         }
 
@@ -167,6 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Event Listeners for Search and Filters ---
     // Attach listeners to trigger applyFilters when input values change.
+    // The console.warn messages here are useful if an element IS genuinely missing from index.html.
     if (searchButton) {
         searchButton.addEventListener('click', applyFilters);
     } else {
@@ -273,7 +276,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (eventListDiv) { // Only fetch events if we are on a page with the event list div
         fetchEvents();
     } else {
-        console.warn("Event listing container (ID 'event-list') not found. Skipping initial event fetch.");
+        console.warn("Event listing container (ID 'events-container') not found. Skipping initial event fetch.");
     }
 
     // 2. Update the cart count badge immediately when the page loads.

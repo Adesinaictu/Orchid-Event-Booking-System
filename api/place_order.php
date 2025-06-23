@@ -8,7 +8,13 @@ header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow th
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-require_once '../includes/db_connect.php'; // Adjust path if necessary
+// --- FIX START ---
+// 1. FIRST, include config.php to define the database constants (DB_HOST, DB_USER, etc.)
+require_once __DIR__ . '/../config.php';
+
+// 2. THEN, include db_connect.php, which will now have access to those constants
+require_once __DIR__ . '/../includes/db_connect.php'; // Adjust path if necessary
+// --- FIX END ---
 
 
 // Function to send a JSON response
@@ -119,7 +125,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Failed to prepare booking_items statement: " . $conn->error);
         }
         foreach ($cartItems as $item) {
-            $stmt_item->bind_param("siid", $booking_db_id, $item['id'], $item['quantity'], $item['price']);
+            // Corrected bind_param from "siid" to "iiid" as booking_id and event_id are likely integers
+            $stmt_item->bind_param("iiid", $booking_db_id, $item['id'], $item['quantity'], $item['price']);
             $stmt_item->execute();
         }
 
@@ -152,7 +159,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // 4. Update event capacities (decrease available tickets)
         $stmt_capacity = $conn->prepare("UPDATE events SET available_tickets = available_tickets - ? WHERE id = ? AND available_tickets >= ?");
         if ($stmt_capacity === false) {
-            throw new Exception("Failed to prepare capacity update statement: " . $conn->error);
+            // --- FIX LINE 162 HERE --- Removed the extra double quote
+            throw new Exception("Failed to prepare capacity update statement: " . $conn->error); 
         }
         foreach ($cartItems as $item) {
             $stmt_capacity->bind_param("iii", $item['quantity'], $item['id'], $item['quantity']);
@@ -171,7 +179,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
         $stmt_clear_cart->bind_param("i", $user_id); // Use the same $user_id as for bookings
         $stmt_clear_cart->execute();
-        $stmt_clear_cart->close();
+        // No need to close here if it's going to be closed in finally, unless it's the only stmt
+        // $stmt_clear_cart->close();
 
 
         // If all successful, commit the transaction
@@ -186,13 +195,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         error_log("Booking Transaction Error: " . $e->getMessage()); // Log the actual error for debugging
         sendJsonResponse(false, 'Booking failed: ' . $e->getMessage());
     } finally {
-        // Close statements
-        if (isset($stmt)) $stmt->close();
-        if (isset($stmt_item)) $stmt_item->close();
-        if (isset($stmt_ticket_holder_refined)) $stmt_ticket_holder_refined->close();
-        if (isset($stmt_capacity)) $stmt_capacity->close();
-        if (isset($stmt_clear_cart)) $stmt_clear_cart->close();
-        $conn->close();
+        // Close statements (ensure all are explicitly closed even if some are commented out for now)
+        if (isset($stmt) && $stmt !== false) $stmt->close();
+        if (isset($stmt_item) && $stmt_item !== false) $stmt_item->close();
+        if (isset($stmt_ticket_holder_refined) && $stmt_ticket_holder_refined !== false) $stmt_ticket_holder_refined->close();
+        if (isset($stmt_capacity) && $stmt_capacity !== false) $stmt_capacity->close();
+        if (isset($stmt_clear_cart) && $stmt_clear_cart !== false) $stmt_clear_cart->close();
+        
+        // It's generally good practice to explicitly close the connection when done with all database operations.
+        // Or if db_connect.php creates a persistent connection, it might be left open for subsequent scripts in the same request.
+        // For an API endpoint that finishes after its task, closing is safer.
+        if (isset($conn) && $conn !== false) {
+            $conn->close();
+        }
     }
 
 } else {

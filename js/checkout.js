@@ -53,28 +53,27 @@ document.addEventListener('DOMContentLoaded', function() {
             const data = await response.json();
 
             if (data.success) {
-                cartItems = data.data.cart;   
+                cartItems = data.data.cart;
 
                 if (!Array.isArray(cartItems)) {
-                console.error('Expected cartItems to be an array, but received:', cartItems);
-                throw new Error('Invalid data format received for cart items.');
-            }
-                
+                    console.error('Expected cartItems to be an array, but received:', cartItems);
+                    throw new Error('Invalid data format received for cart items.');
+                }
+
                 if (cartItems.length === 0) {
                     alert('Your cart is empty. Please add items to your cart before checking out.');
-                   //  window.location.href = 'index.html'; 
+                    // window.location.href = 'index.html'; // Uncomment if you want redirection
                 } else {
                     renderTicketHolderForms();
-                    // updateCartCount(); 
                 }
             } else {
                 alert('Failed to load cart items: ' + (data.message || 'Unknown error.'));
-              // window.location.href = 'cart.html';  
+                // window.location.href = 'cart.html'; // Uncomment if you want redirection
             }
         } catch (error) {
             console.error('Error fetching cart items:', error);
             alert('An error occurred while loading your cart. Please try again or go back to cart.');
-             // window.location.href = 'cart.html'; 
+            // window.location.href = 'cart.html'; // Uncomment if you want redirection
         }
     }
 
@@ -87,7 +86,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         if (totalTickets > 1) { // Only show individual forms if more than 1 ticket
-             // Add a general instruction if multiple tickets are present
+            // Add a general instruction if multiple tickets are present
             const instructionDiv = document.createElement('div');
             instructionDiv.className = 'alert alert-info small mt-3';
             instructionDiv.textContent = 'Please provide details for each ticket holder below. Leave blank if the main attendee is the only ticket holder or tickets are for the same person.';
@@ -314,18 +313,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
                 if (result.success) {
                     // Update the booking ID in the modal
-                    bookingIdDisplay.textContent = result.bookingId || '#N/A';
+                    bookingIdDisplay.textContent = result.data.bookingId || '#N/A'; // Access data.bookingId
 
                     const bookingSuccessModalInstance = new bootstrap.Modal(bookingSuccessModalElement); // Create new instance
                     bookingSuccessModalInstance.show();
 
-                    // Clear the cart after successful booking
-                    if (typeof clearCart === 'function') { // Assuming clearCart is defined in updateCartCount.js
-                        clearCart();
+                    // Clear the cart after successful booking using the globally available function
+                    if (typeof window.clearCart === 'function') {
+                        window.clearCart();
                     } else {
-                        console.warn('clearCart function not found. Cart might not be cleared on frontend.');
-                        localStorage.removeItem('cart'); // Fallback if clearCart not available
-                        // No need to call updateCartCount() here if clearCart() already does it or if we are redirecting
+                        console.warn('window.clearCart function not found. Cart might not be cleared on frontend.');
+                        localStorage.removeItem('cart'); // Fallback if for some reason window.clearCart is not available
                     }
 
                 } else {
@@ -346,10 +344,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // --- Initial Load ---
     fetchCartItems(); // Load cart items when the page loads
-    // Make sure updateCartCount is called, assuming it's in updateCartCount.js and globally available
-    if (typeof updateCartCount === 'function') {
-        updateCartCount();
+
+    // Make sure updateCartCount is called using the globally available function
+    if (typeof window.updateCartCount === 'function') {
+        window.updateCartCount(); // This will now call the server-fetching version
     } else {
-        console.warn('updateCartCount function not found. Cart badge might not be updated on load.');
+        console.warn('window.updateCartCount function not found. Cart badge might not be updated on load.');
     }
 });

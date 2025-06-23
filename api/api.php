@@ -7,8 +7,15 @@ error_reporting(E_ALL);
 
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
-// Include the database connection file
-require_once 'db_connect.php';
+
+// --- CRITICAL FIX START ---
+// 1. Include config.php FIRST to define DB constants
+require_once __DIR__ . '/../config.php';
+
+// 2. Then, include db_connect.php, which can now use those defined constants
+require_once __DIR__ . '/../includes/db_connect.php';
+// --- CRITICAL FIX END ---
+
 
 if (isset($_GET['id']) && $_GET['id'] !== '') {
     $eventId = $_GET['id'];
@@ -41,7 +48,7 @@ if (isset($_GET['id']) && $_GET['id'] !== '') {
 $sql = "SELECT * FROM events WHERE 1=1"; // 'WHERE 1=1' is a trick to easily append conditions
 
 $params = []; // Array to hold parameters for prepared statement
-$types = "";   // String to hold parameter types ('s' for string, 'i' for integer, 'd' for double)
+$types = "";  // String to hold parameter types ('s' for string, 'i' for integer, 'd' for double)
 
 // --- Handle filters from GET request parameters ---
 

@@ -1,49 +1,79 @@
 <?php
+// ... (keep display_errors and error_reporting for now if you added them, but remove them for production)
+
+session_start();
 header('Content-Type: application/json');
-header('Access-Control-Allow-Origin: *'); // Allow all origins for development
-header('Access-Control-Allow-Methods: GET');
-header('Access-Control-Allow-Headers: Content-Type');
 
-// Display PHP errors (for debugging only, REMOVE IN PRODUCTION)
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+require_once __DIR__ . '/../config.php';
+require_once __DIR__ . '/../includes/db_connect.php';
 
-require_once '../includes/db_connect.php'; // Adjust path if necessary
+$response = ['success' => false, 'message' => 'An unknown error occurred.', 'data' => null];
 
-$event_id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$eventId = $_GET['id'] ?? null;
 
-if ($event_id === 0) {
-    echo json_encode(['success' => false, 'message' => 'Event ID not provided or invalid.']);
-    $conn->close();
+if (!$eventId) {
+    $response['message'] = 'Event ID is required.';
+    echo json_encode($response);
     exit();
 }
 
-// Ensure 'image_url' is selected, not 'image'
-$sql = "SELECT id, name, description, date, time, location, price, image_url, category FROM events WHERE id = ?";
-$stmt = $conn->prepare($sql);
+try {
+    if (!isset($conn) || $conn->connect_error) {
+        throw new Exception("Database connection not established.");
+    }
 
-if ($stmt === false) {
-    error_log("Failed to prepare statement: " . $conn->error);
-    echo json_encode(['success' => false, 'message' => 'Database query preparation failed.', 'error_details' => $conn->error]);
-    $conn->close();
-    exit();
+    // UPDATED SQL query: Removed lines related to 'categories' table
+    $sql = "SELECT
+                e.id,
+                e.name,
+                e.description,
+                e.date,
+                e.time,
+                e.location,
+                e.price,
+                e.total_tickets,
+                e.tickets_sold,
+                (e.total_tickets - e.tickets_sold) AS available_tickets,
+                e.image_url
+                -- c.name AS category_name -- REMOVED THIS LINE
+            FROM
+                events e
+            -- LEFT JOIN
+            --     categories c ON e.category_id = c.category_id -- REMOVED THIS LINE
+            WHERE
+                e.id = ?";
+
+    $stmt = $conn->prepare($sql);
+    if ($stmt === false) {
+        throw new Exception("Failed to prepare statement: " . $conn->error);
+    }
+    $stmt->bind_param('i', $eventId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $eventDetails = $result->fetch_assoc();
+
+    if ($eventDetails) {
+        $response['success'] = true;
+        $response['message'] = 'Event details fetched successfully.';
+        $response['data'] = $eventDetails;
+    } else {
+        $response['message'] = 'Event not found.';
+        http_response_code(404);
+    }
+
+} catch (Exception $e) {
+    error_log("Error fetching event details for ID {$eventId}: " . $e->getMessage());
+    $response['message'] = 'Server error: ' . $e->getMessage();
+    http_response_code(500);
+} finally {
+    if (isset($stmt) && $stmt instanceof mysqli_stmt) {
+        $stmt->close();
+    }
+    if (isset($conn) && $conn instanceof mysqli) {
+        $conn->close();
+    }
 }
 
-$stmt->bind_param("i", $event_id);
-$stmt->execute();
-$result = $stmt->get_result();
-
-if ($result->num_rows > 0) {
-    $event = $result->fetch_assoc();
-    $event['formatted_date'] = date('M d, Y', strtotime($event['date']));
-    $event['formatted_time'] = date('h:i A', strtotime($event['time']));
-
-    echo json_encode(['success' => true, 'data' => $event]);
-} else {
-    echo json_encode(['success' => false, 'message' => 'Event not found.']);
-}
-
-$stmt->close();
-$conn->close();
+echo json_encode($response);
+exit();
 ?>

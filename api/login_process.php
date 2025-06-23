@@ -1,6 +1,3 @@
-
-
-
 <?php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *'); // For development, adjust for production
@@ -19,10 +16,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
+// --- CRITICAL FIX START ---
+// 1. Include config.php FIRST to define DB constants (DB_HOST, DB_USER, etc.)
+require_once __DIR__ . '/../config.php';
 
-
-
- require_once __DIR__ . '/../includes/db_connect.php';
+// 2. Then, include db_connect.php, which can now use those defined constants
+require_once __DIR__ . '/../includes/db_connect.php';
+// --- CRITICAL FIX END ---
 
 
 // Function to send JSON response
@@ -63,9 +63,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Check if user exists AND if the provided password matches the hashed password from the database
         // Use $user['password_hash'] as this is the column name in your database
-        if ($user && password_verify($password, $user['password_hash'])) { // <-- CRITICAL FIX HERE (was $user[' password_hash'])
+        if ($user && password_verify($password, $user['password_hash'])) {
             // Login successful
-            $_SESSION['user_id'] = $user['user_id']; // <-- FIX HERE (was $user['id'])
+            $_SESSION['user_id'] = $user['user_id'];
             $_SESSION['user_email'] = $user['email'];
 
             sendJsonResponse(true, 'Login successful!', ['user_id' => $user['user_id'], 'user_email' => $user['email']]);

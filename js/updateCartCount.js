@@ -1,29 +1,26 @@
+    // C:\xampp\htdocs\orchid\js\updateCartCount.js
 
-// Make the function globally accessible
-window.updateCartCount = async function() {
-    const cartCountBadge = document.getElementById('cart-count-badge');
-    const API_URL = 'api/get_cart_count.php';
+/**
+ * Placeholder function to update the cart count badge.
+ * Actual implementation to fetch cart count from backend will go here later.
+ */
+function updateCartCount() {
+    // For now, let's just log that it was called.
+    console.log("updateCartCount function called. (Actual cart count logic not yet implemented)");
 
-    try {
-        const response = await fetch(API_URL);
-
-        if (!response.ok) {
-            const errorDetails = await response.text();
-            throw new Error(`HTTP error! status: ${response.status}, details: ${errorDetails}`);
-        }
-
-        const data = await response.json();
-        if (data.success) {
-            cartCountBadge.textContent = data.count;
-        } else {
-            console.error('Error in API response for cart count:', data.message);
-            cartCountBadge.textContent = '0';
-        }
-    } catch (error) {
-        console.error('Error fetching cart count:', error);
-        cartCountBadge.textContent = '0';
-    }
+    // Example of where you might fetch the actual cart count from your backend:
+    // fetch('/orchid/api/get_cart_count.php')
+    //     .then(response => response.json())
+    //     .then(data => {
+    //         if (data.success) {
+    //             const cartBadge = document.getElementById('cart-badge'); // Assuming you have an element with this ID
+    //             if (cartBadge) {
+    //                 cartBadge.textContent = data.count;
+    //             }
+    //         }
+    //     })
+    //     .catch(error => console.error('Error fetching cart count:', error));
 }
 
-// Call it on page load
-document.addEventListener('DOMContentLoaded', updateCartCount);
+// You might also want to call this function on page load if needed.
+// document.addEventListener('DOMContentLoaded', updateCartCount);

@@ -1,10 +1,11 @@
 <?php
-// Corrected orchid/api/clear_cart.php
 header('Content-Type: application/json');
 header('Access-Control-Allow-Origin: *');
 header('Access-Control-Allow-Methods: POST, OPTIONS');
 header('Access-Control-Allow-Headers: Content-Type, Authorization');
+require_once __DIR__ . '/../config.php';
 
+require_once __DIR__ . '/../includes/db_connect.php';
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     exit(0);
 }
@@ -12,9 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-
-require_once '../includes/db_connect.php';
-
 $response = ['success' => false, 'message' => 'An unknown error occurred.'];
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
